@@ -67,13 +67,17 @@ const addProduct = async () => {
 };
 
 const sendMessageToMainPage = (product) => {
-  window.opener.postMessage(
-    {
-      action: "addProduct",
-      product: product,
-    },
-    "*"
-  );
+  if (window.opener && typeof window.opener.postMessage === 'function') {
+    window.opener.postMessage(
+      {
+        action: "addProduct",
+        product: product,
+      },
+      "*"
+    );
+  } else {
+    console.error("Window opener is not defined.");
+  }
 };
 
 const addNewItemButton = document.getElementById("add-item");
